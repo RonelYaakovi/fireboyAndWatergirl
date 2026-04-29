@@ -12,9 +12,11 @@ public class Window extends JFrame {
         this.setLayout(new BorderLayout());
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
+        switchPanel(new StartScreen(this));
         this.setVisible(true);
-        switchPanel(new startScreen(this));
+
     }
+
 
     public void switchPanel(Component newPanel) {
         this.getContentPane().removeAll();
