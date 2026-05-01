@@ -18,13 +18,7 @@ public class StartScreen extends JPanel {
         this.backgroundImage = new ImageIcon("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Background_fireboy&watergirl.jpeg").getImage();
         this.backgroundImage = backgroundImage.getScaledInstance(window.getWidth(), window.getHeight(), Image.SCALE_SMOOTH);
 
-        this.startButton = new JButton("Start");
-        this.startButton.setBounds(190, 290, 140, 45);
-        this.startButton.setFont(new Font("Arial", Font.BOLD, 20));
-        Color startButtonColor = new Color(192, 7, 7);
-        this.startButton.setBackground(startButtonColor);
-        this.startButton.setForeground(Color.WHITE);
-        this.startButton.setFocusPainted(false);
+        this.startButton = new GameButton("Start" , 190, 290, 140, 45, new Color(192, 7, 7));
 
 
 //        this.startButton.addActionListener(new ActionListener() {
@@ -33,13 +27,7 @@ public class StartScreen extends JPanel {
 //                פה צריך לעבור למסך המשחק*****
 //            }
 //        });
-        this.rulesButton = new JButton("Rules");
-        this.rulesButton.setBounds(470, 290, 140, 45);
-        this.rulesButton.setFont(new Font("Arial", Font.BOLD, 20));
-        Color rulesButtonColor = new Color(3, 174, 210);
-        this.rulesButton.setBackground(rulesButtonColor);
-        this.rulesButton.setForeground(Color.WHITE);
-        this.rulesButton.setFocusPainted(false);
+        this.rulesButton = new GameButton("Rules", 470, 290, 140, 45, new Color(3, 174, 210));
 
 
 
