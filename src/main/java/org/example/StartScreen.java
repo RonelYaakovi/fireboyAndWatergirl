@@ -21,12 +21,9 @@ public class StartScreen extends JPanel {
         this.startButton = new GameButton("Start" , 190, 290, 140, 45, new Color(192, 7, 7));
 
 
-//        this.startButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                פה צריך לעבור למסך המשחק*****
-//            }
-//        });
+        this.startButton.addActionListener(e -> {
+            window.switchPanel(new LevelSelectionScreen(window));
+        });
         this.rulesButton = new GameButton("Rules", 470, 290, 140, 45, new Color(3, 174, 210));
 
 
@@ -39,9 +36,7 @@ public class StartScreen extends JPanel {
             window.switchPanel(new RulesScreen(window));
         });
 
-        this.startButton.addActionListener(e -> {
-            window.switchPanel(new LevelSelectionScreen(window));
-        });
+
 
 
 
