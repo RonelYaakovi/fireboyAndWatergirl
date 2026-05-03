@@ -39,6 +39,10 @@ public class StartScreen extends JPanel {
             window.switchPanel(new RulesScreen(window));
         });
 
+        this.startButton.addActionListener(e -> {
+            window.switchPanel(new LevelSelectionScreen(window));
+        });
+
 
 
 
