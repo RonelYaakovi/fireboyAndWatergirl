@@ -18,7 +18,7 @@ public class StartScreen extends JPanel {
         this.backgroundImage = new ImageIcon("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Background_fireboy&watergirl.jpeg").getImage();
         this.backgroundImage = backgroundImage.getScaledInstance(window.getWidth(), window.getHeight(), Image.SCALE_SMOOTH);
 
-        this.startButton = new GameButton("Start" , 190, 290, 140, 45, new Color(192, 7, 7));
+        this.startButton = new GameButton("Start", 190, 290, 140, 45, new Color(192, 7, 7));
 
 
         this.startButton.addActionListener(e -> {
@@ -27,19 +27,12 @@ public class StartScreen extends JPanel {
         this.rulesButton = new GameButton("Rules", 470, 290, 140, 45, new Color(3, 174, 210));
 
 
-
-
         this.add(this.startButton);
         this.add(this.rulesButton);
 
         this.rulesButton.addActionListener(e -> {
             window.switchPanel(new RulesScreen(window));
         });
-
-
-
-
-
 
 
 

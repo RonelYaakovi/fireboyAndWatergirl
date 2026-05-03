@@ -6,6 +6,7 @@ public class Character {
     private int width;
     private int height;
 
+
     public Character(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
