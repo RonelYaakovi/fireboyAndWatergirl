@@ -18,8 +18,9 @@ public class LevelSelectionScreen extends JPanel {
 
         this.level1Button = new GameButton("LEVEL 1", 200, 250, 150, 50, new Color(138, 95, 65));
         this.level1Button.addActionListener(e -> {
-            System.out.println("Loading stage 1...");
-            // כאן בהמשך נקרא למחלקת המשחק: window.switchPanel(new GameLevel(window, 1));
+            Level1 level1 = new Level1(window);
+            window.switchPanel(level1);
+            level1.startLevel();
         });
 
         this.level2Button = new GameButton("LEVEL 2", 450, 250, 150, 50, new Color(138, 95, 65));
