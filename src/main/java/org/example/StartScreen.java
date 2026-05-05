@@ -11,6 +11,7 @@ public class StartScreen extends JPanel {
     private ImageIcon rulesImage;
     private Image backgroundImage;
 
+
     public StartScreen(Window window) {
         this.window = window;
         this.setLayout(null);
