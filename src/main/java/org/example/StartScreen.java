@@ -36,8 +36,6 @@ public class StartScreen extends JPanel {
         });
 
 
-
-
     }
 
     @Override

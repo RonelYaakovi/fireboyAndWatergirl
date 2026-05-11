@@ -1,77 +1,84 @@
 package org.example;
 
-import org.example.FireBoy;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Controller implements KeyListener {
-    FireBoy fireBoy;
-    Watergirl watergirl;
-    boolean[] booleans;
 
-    public Controller(FireBoy fireBoy, Watergirl watergirl) {
+    // אני משתמש במחלקת האב Character כדי שזה יעבוד גם ל-FireBoy וגם ל-Watergirl
+    private Character fireBoy;
+    private Character watergirl;
+
+    // אינדקסים:
+    // 0=ימינה(אש), 1=שמאלה(אש), 2=קפיצה(אש)
+    // 3=ימינה(מים), 4=שמאלה(מים), 5=קפיצה(מים)
+    private boolean[] booleans;
+
+    public Controller(Character fireBoy, Character watergirl) {
         this.fireBoy = fireBoy;
         this.watergirl = watergirl;
-        this.booleans = new boolean[6]; // צריך רק ימינה, שמאלה, וקפיצה
-        this.move();
+        this.booleans = new boolean[6];
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
+        // לא צריך לממש כלום כאן
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            this.booleans[0] = true;
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            this.booleans[1] = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            this.booleans[2] = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_D) {
-            booleans[3] = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_W) {
-            booleans[4] = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_A) {
-            booleans[5] = true;
-        }
+        int key = e.getKeyCode();
+
+        // --- מקשי FireBoy (חצים) ---
+        if (key == KeyEvent.VK_RIGHT) booleans[0] = true;
+        else if (key == KeyEvent.VK_LEFT) booleans[1] = true;
+        else if (key == KeyEvent.VK_UP) booleans[2] = true;
+
+            // --- מקשי Watergirl (WASD) ---
+        else if (key == KeyEvent.VK_D) booleans[3] = true; // D = ימינה
+        else if (key == KeyEvent.VK_A) booleans[4] = true; // A = שמאלה
+        else if (key == KeyEvent.VK_W) booleans[5] = true; // W = קפיצה
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            this.booleans[0] = false;
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            this.booleans[1] = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_SPACE) {
-            this.booleans[2] = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_D) {
-            booleans[3] = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_W) {
-            booleans[4] = false;
-        } else if (e.getKeyCode() == KeyEvent.VK_A) {
-            booleans[5] = false;
-        }
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_RIGHT) booleans[0] = false;
+        else if (key == KeyEvent.VK_LEFT) booleans[1] = false;
+        else if (key == KeyEvent.VK_UP) booleans[2] = false;
+
+        else if (key == KeyEvent.VK_D) booleans[3] = false;
+        else if (key == KeyEvent.VK_A) booleans[4] = false;
+        else if (key == KeyEvent.VK_W) booleans[5] = false;
     }
 
-    public void move() {
-        new Thread(() -> {
-            while (true) {
-                if (booleans[0])
-                    this.fireBoy.moveRight();
-                if (booleans[1])
-                    this.fireBoy.moveLeft();
-                if (booleans[2])
-                    this.fireBoy.jump();// מפעיל את פיזיקת הקפיצה
-                if (booleans[3])
-                    this.watergirl.moveRight();
-                if (booleans[4])
-                    this.watergirl.moveLeft();
-                if (booleans[5])
-                    this.watergirl.jump();
-                try {
-                    Thread.sleep(16);
-                } catch (InterruptedException e) {
-                }
-            }
-        }).start();
+    // הפונקציה הזו תיקרא מתוך לולאת המשחק המרכזית (Game Loop) בכל פריים
+    public void applyInputs() {
+
+        // --- תנועת FireBoy ---
+        if (booleans[0]) {
+            fireBoy.moveRight();
+        } else if (booleans[1]) {
+            fireBoy.moveLeft();
+        } else {
+            fireBoy.stopMoving();
+        }
+
+        if (booleans[2]) {
+            fireBoy.jump();
+        }
+        // --- תנועת Watergirl ---
+        if (booleans[3]) {
+            watergirl.moveRight();
+        } else if (booleans[4]) {
+            watergirl.moveLeft();
+        } else {
+            watergirl.stopMoving();
+        }
+
+        if (booleans[5]) {
+            watergirl.jump();
+        }
     }
-}
+    }
