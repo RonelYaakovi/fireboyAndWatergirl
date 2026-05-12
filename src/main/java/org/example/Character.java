@@ -15,7 +15,7 @@ public class Character {
     protected double jumpStrength = -15;
 
     protected boolean onGround = false;
-    protected boolean isAlive = true;
+    protected boolean isAlive;
     protected int velX = 0;
 
     // הבנאי מעודכן לקבל את מידות המסך
@@ -27,6 +27,7 @@ public class Character {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.velocityY = 0;
+        isAlive=true;
     }
 
     public Rectangle getBounds() {
