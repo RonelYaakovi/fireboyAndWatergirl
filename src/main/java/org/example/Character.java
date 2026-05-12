@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Character {
     protected int x, y, width, height;
+    protected int diamondCount =0;
     protected int screenWidth, screenHeight; // משתנים חדשים לגבולות המסך
     protected Image imageRight, imageLeft, currentImage;
 
@@ -14,6 +15,7 @@ public class Character {
     protected double jumpStrength = -15;
 
     protected boolean onGround = false;
+    protected boolean isAlive = true;
     protected int velX = 0;
 
     // הבנאי מעודכן לקבל את מידות המסך
@@ -29,6 +31,9 @@ public class Character {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+    public void addToDiamondCount() {
+        this.diamondCount ++;
     }
     public void moveRight() {
         this.velX = 5; // מגדיר מהירות ימינה
@@ -99,10 +104,137 @@ public class Character {
             onGround = true;
         }
     }
+    public void died(){
+        isAlive=false;
+    }
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getDiamondCount() {
+        return diamondCount;
+    }
+
+    public void setDiamondCount(int diamondCount) {
+        this.diamondCount = diamondCount;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public void setScreenWidth(int screenWidth) {
+        this.screenWidth = screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public void setScreenHeight(int screenHeight) {
+        this.screenHeight = screenHeight;
+    }
+
+    public Image getImageRight() {
+        return imageRight;
+    }
+
+    public void setImageRight(Image imageRight) {
+        this.imageRight = imageRight;
+    }
+
+    public Image getImageLeft() {
+        return imageLeft;
+    }
+
+    public void setImageLeft(Image imageLeft) {
+        this.imageLeft = imageLeft;
+    }
+
+    public Image getCurrentImage() {
+        return currentImage;
+    }
+
+    public void setCurrentImage(Image currentImage) {
+        this.currentImage = currentImage;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public double getGravity() {
+        return gravity;
+    }
+
+    public void setGravity(double gravity) {
+        this.gravity = gravity;
+    }
+
+    public double getJumpStrength() {
+        return jumpStrength;
+    }
+
+    public void setJumpStrength(double jumpStrength) {
+        this.jumpStrength = jumpStrength;
+    }
+
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
+    }
+
+    public int getVelX() {
+        return velX;
+    }
+
+    public void setVelX(int velX) {
+        this.velX = velX;
+    }
 
     public void paint(Graphics g) {
         if (currentImage != null) {
             g.drawImage(currentImage, x, y, width, height, null);
         }
+
         }
     }
