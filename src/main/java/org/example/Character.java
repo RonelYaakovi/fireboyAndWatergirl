@@ -26,7 +26,7 @@ public class Character {
     protected double jumpStrength = -13;
 
     protected boolean onGround = false;
-    protected boolean isAlive;
+    protected boolean isAlive = true;
     protected boolean isOnTheDoor = false;
     protected int velX = 0;
 
@@ -128,14 +128,13 @@ public class Character {
     }
 
     public void paint(Graphics g) {
-        if (currentImage != null) {
+        if (currentImage != null && isAlive) {
             g.drawImage(currentImage, x, y, width, height, null);
         }
     }
 
     // שאר הגטרים והסטרס שלך (isAlive, died וכו')...
     public void died(){ isAlive=false; }
-    public void alive(){ isAlive=true; }
     public boolean isAlive() { return isAlive; }
 
 
