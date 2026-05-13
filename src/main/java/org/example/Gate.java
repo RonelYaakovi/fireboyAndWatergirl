@@ -5,37 +5,60 @@ import java.awt.*;
 
 public class Gate extends GameObject {
     private Image gateImage;
-    private boolean isOpening = false; // האם השער בתהליך פתיחה
-    private int targetY;               // הגובה המקסימלי אליו הוא צריך להגיע
-    private int speed = 2;             // מהירות העלייה (פיקסלים לפריים)
+    private boolean isOpening = false;
+
+    private int originalY; // המיקום ההתחלתי (שער סגור למטה)
+    private int targetY;   // הגובה המקסימלי (שער פתוח למעלה)
+    private int speed = 2; // מהירות התנועה
 
     public Gate(int x, int y, int width, int height) {
         super(x, y, width, height);
-        gateImage = new ImageIcon("gate.png").getImage(); // רק תמונה אחת!
+        // טעינת התמונה (מומלץ להעביר מה-GamePanel כדי לא לטעון מחדש לכל שער, אבל נשאיר ככה לבקשתך)
+        gateImage = new ImageIcon("gate.png").getImage();
 
-        // נגדיר שהשער אמור לעלות למעלה מרחק ששווה לגובה שלו
-        // (אפשר גם לתת מספר קבוע אחר, למשל y - 100)
-        this.targetY = y - height;
+        this.originalY = y;          // שומרים את ה-Y המקורי בזיכרון!
+        this.targetY = y - height;   // קובעים את יעד הפתיחה
     }
 
-    // הפונקציה שנקרא לה מהכפתור
+    // הפונקציה שנקרא לה מהכפתור כשהשחקן עומד עליו
     public void open() {
         this.isOpening = true;
     }
 
-    // הפונקציה החדשה: אחראית על התנועה עצמה
-    public void update() {
-        // אם אמרו לו להיפתח, והוא עדיין לא הגיע ליעד שלו למעלה
-        if (isOpening && getY() > targetY) {
+    // הפונקציה שנקרא לה כשהשחקן יורד מהכפתור
+    public void close() {
+        this.isOpening = false;
+    }
 
-            // מזיזים אותו למעלה על ידי חיסור מה-Y הנוכחי
-            // הערה: ודא שיש לך מתודת setY במחלקת GameObject שלך!
-            super.setY(getY() - speed);
+    // הפונקציה המעודכנת: מטפלת גם בעלייה וגם בירידה
+    public void update() {
+
+        if (isOpening) {
+            // אם צריך להיפתח והוא עדיין נמוך מהיעד
+            if (getY() > targetY) {
+                super.setY(getY() - speed); // עולה למעלה
+
+                // תיקון קטן: מוודאים שלא עלינו "יותר מדי" בגלל המהירות
+                if (getY() < targetY) {
+                    super.setY(targetY);
+                }
+            }
+        }
+        else {
+            // אם צריך להיסגר והוא עדיין גבוה מהמקור
+            if (getY() < originalY) {
+                super.setY(getY() + speed); // יורד למטה
+
+                // תיקון: מוודאים שלא נכנסנו מתחת לרצפה
+                if (getY() > originalY) {
+                    super.setY(originalY);
+                }
+            }
         }
     }
 
     public void draw(Graphics g) {
-        // תמיד מציירים את אותה תמונה, היא פשוט תצוייר ב-Y חדש בכל פעם
+        // ציור השער במיקומו העדכני
         g.drawImage(gateImage, getX(), getY(), getWidth(), getHeight(), null);
     }
 }

@@ -27,6 +27,7 @@ public class Character {
 
     protected boolean onGround = false;
     protected boolean isAlive;
+    protected boolean isOnTheDoor = false;
     protected int velX = 0;
 
     public Character(int x, int y, int screenWidth, int screenHeight) {
@@ -101,6 +102,7 @@ public class Character {
             }
         }
 
+
         if (y + height >= screenHeight) {
             y = screenHeight - height;
             velocityY = 0;
@@ -133,5 +135,15 @@ public class Character {
 
     // שאר הגטרים והסטרס שלך (isAlive, died וכו')...
     public void died(){ isAlive=false; }
+    public void alive(){ isAlive=true; }
     public boolean isAlive() { return isAlive; }
+
+
+    public void onTheDoor(){
+        isOnTheDoor = true;
+    }
+    public void notONTheDoor(){
+        isOnTheDoor = false;
+    }
+    public boolean isOnTheDoor() { return isOnTheDoor; }
 }
