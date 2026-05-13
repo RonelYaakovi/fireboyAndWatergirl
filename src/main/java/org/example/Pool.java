@@ -5,20 +5,22 @@ import java.awt.*;
 public class Pool extends GameObject {
 
     private Image poolImage;
+    private String type; // יכול להיות: "FIRE", "WATER", "POISON"
 
-    // בנאי שמקבל מיקום ואת סוג התמונה (לבה או מים)
-    public Pool(int x, int y, Image poolImage) {
-        // קריאה לבנאי של מחלקת האב:
-        // אנחנו ממקמים את הבריכה קצת יותר נמוך (y + 25) ועושים אותה בגובה 25 במקום 50
-        super(x, y + 25, 50, 25);
-
+    public Pool(int x, int y, Image poolImage, String type) {
+        // הבריכה נמוכה יותר מגובה הבלוק (15 פיקסלים גובה) כדי שיראה כמו שלולית
+        super(x, y + 10, 25, 30);
         this.poolImage = poolImage;
+        this.type = type;
     }
 
+    public String getType() {
+        return type;
+    }
 
     public void paint(Graphics g) {
         if (poolImage != null) {
-            g.drawImage(poolImage, getX(), getY(),getWidth(), getHeight(), null);
-        }
+            g.drawImage(poolImage, getX(), getY(), getWidth(), getHeight(), null);
         }
     }
+}

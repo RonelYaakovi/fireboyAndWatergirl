@@ -1,29 +1,39 @@
 package org.example;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Character {
     protected int x, y, width, height;
-    protected int diamondCount =0;
-    protected int screenWidth, screenHeight; // משתנים חדשים לגבולות המסך
-    protected Image imageRight, imageLeft, currentImage;
+    protected int diamondCount = 0;
+    protected int screenWidth, screenHeight;
+
+    // --- מערכי תמונות אנימציה ---
+    protected Image[] runRightFrames;
+    protected Image[] runLeftFrames;
+    protected Image idleRight;
+    protected Image idleLeft;
+    protected Image currentImage;
+
+    // --- טיימר אנימציה ---
+    protected boolean isFacingRight = true;
+    protected int currentFrameIndex = 0;
+    protected int animationTick = 0;
+    protected int animationSpeed = 5; // מהירות החלפת תמונות
 
     protected double velocityY;
     protected double gravity = 0.8;
-    protected double jumpStrength = -15;
+    protected double jumpStrength = -13;
 
     protected boolean onGround = false;
     protected boolean isAlive;
     protected int velX = 0;
 
-    // הבנאי מעודכן לקבל את מידות המסך
     public Character(int x, int y, int screenWidth, int screenHeight) {
         this.x = x;
         this.y = y;
-        this.width = 100;
-        this.height = 100;
+        this.width = 50;  // הותאם לעבור במפה
+        this.height = 40; // הותאם לעבור במפה
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.velocityY = 0;
@@ -33,23 +43,25 @@ public class Character {
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
+
     public void addToDiamondCount() {
-        this.diamondCount ++;
+        this.diamondCount++;
     }
+
     public void moveRight() {
-        this.velX = 5; // מגדיר מהירות ימינה
-        this.currentImage = imageRight; // מעדכן לתמונה הנכונה
+        this.velX = 2;
+        this.isFacingRight = true;
     }
 
     public void moveLeft() {
-        this.velX = -5; // מגדיר מהירות שמאלה
-        this.currentImage = imageLeft; // מעדכן לתמונה הנכונה
+        this.velX = -2;
+        this.isFacingRight = false;
     }
 
     public void stopMoving() {
-        this.velX = 0; // מאפס את המהירות האופקית
-        // שים לב: אנחנו לא משנים פה את התמונה, כדי שהדמות תישאר להסתכל
-        // לכיוון האחרון שאליו היא הלכה, במקום להפוך לריבוע או להיעלם.
+        this.velX = 0;
+        this.currentFrameIndex = 0; // איפוס אנימציה
+        this.currentImage = isFacingRight ? idleRight : idleLeft;
     }
 
     public void jump() {
@@ -60,30 +72,22 @@ public class Character {
     }
 
     public void update(ArrayList<Rectangle> platforms) {
-        // --- 1. טיפול בציר X ---
+        // --- 1. תנועה והתנגשות ציר X ---
         x += velX;
-
-        // עצירה בקירות (פלטפורמות)
         for (Rectangle p : platforms) {
             if (getBounds().intersects(p)) {
                 if (velX > 0) x = p.x - width;
                 if (velX < 0) x = p.x + p.width;
             }
         }
+        if (x < 0) x = 0;
+        else if (x + width > screenWidth) x = screenWidth - width;
 
-        // עצירה בקצוות המסך (ימין ושמאל)
-        if (x < 0) {
-            x = 0; // חסימה מצד שמאל
-        } else if (x + width > screenWidth) {
-            x = screenWidth - width; // חסימה מצד ימין
-        }
-
-        // --- 2. טיפול בציר Y ---
+        // --- 2. תנועה והתנגשות ציר Y ---
         velocityY += gravity;
         y += velocityY;
         onGround = false;
 
-        // התנגשות בפלטפורמות מלמעלה ומלמטה
         for (Rectangle p : platforms) {
             if (getBounds().intersects(p)) {
                 if (velocityY > 0) {
@@ -97,145 +101,37 @@ public class Character {
             }
         }
 
-        // --- 3. מניעת נפילה אל מחוץ למסך (רצפה גלובלית) ---
-        // עכשיו משתמשים ב-screenHeight במקום במספר קבוע
         if (y + height >= screenHeight) {
             y = screenHeight - height;
             velocityY = 0;
             onGround = true;
         }
-    }
-    public void died(){
-        isAlive=false;
-    }
-    public boolean isAlive() {
-        return isAlive;
-    }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getDiamondCount() {
-        return diamondCount;
-    }
-
-    public void setDiamondCount(int diamondCount) {
-        this.diamondCount = diamondCount;
-    }
-
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    public void setScreenWidth(int screenWidth) {
-        this.screenWidth = screenWidth;
-    }
-
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    public void setScreenHeight(int screenHeight) {
-        this.screenHeight = screenHeight;
-    }
-
-    public Image getImageRight() {
-        return imageRight;
-    }
-
-    public void setImageRight(Image imageRight) {
-        this.imageRight = imageRight;
-    }
-
-    public Image getImageLeft() {
-        return imageLeft;
-    }
-
-    public void setImageLeft(Image imageLeft) {
-        this.imageLeft = imageLeft;
-    }
-
-    public Image getCurrentImage() {
-        return currentImage;
-    }
-
-    public void setCurrentImage(Image currentImage) {
-        this.currentImage = currentImage;
-    }
-
-    public double getVelocityY() {
-        return velocityY;
-    }
-
-    public void setVelocityY(double velocityY) {
-        this.velocityY = velocityY;
-    }
-
-    public double getGravity() {
-        return gravity;
-    }
-
-    public void setGravity(double gravity) {
-        this.gravity = gravity;
-    }
-
-    public double getJumpStrength() {
-        return jumpStrength;
-    }
-
-    public void setJumpStrength(double jumpStrength) {
-        this.jumpStrength = jumpStrength;
-    }
-
-    public boolean isOnGround() {
-        return onGround;
-    }
-
-    public void setOnGround(boolean onGround) {
-        this.onGround = onGround;
-    }
-
-    public int getVelX() {
-        return velX;
-    }
-
-    public void setVelX(int velX) {
-        this.velX = velX;
+        // --- 3. עדכון פריים אנימציה ---
+        if (velX != 0) {
+            animationTick++;
+            if (animationTick >= animationSpeed) {
+                animationTick = 0;
+                if (isFacingRight && runRightFrames != null) {
+                    currentFrameIndex = (currentFrameIndex + 1) % runRightFrames.length;
+                    currentImage = runRightFrames[currentFrameIndex];
+                } else if (!isFacingRight && runLeftFrames != null) {
+                    currentFrameIndex = (currentFrameIndex + 1) % runLeftFrames.length;
+                    currentImage = runLeftFrames[currentFrameIndex];
+                }
+            }
+        } else {
+            currentImage = isFacingRight ? idleRight : idleLeft;
+        }
     }
 
     public void paint(Graphics g) {
         if (currentImage != null) {
             g.drawImage(currentImage, x, y, width, height, null);
         }
-
-        }
     }
+
+    // שאר הגטרים והסטרס שלך (isAlive, died וכו')...
+    public void died(){ isAlive=false; }
+    public boolean isAlive() { return isAlive; }
+}
