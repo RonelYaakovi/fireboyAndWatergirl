@@ -26,7 +26,7 @@ public class Character {
     protected double jumpStrength = -13;
 
     protected boolean onGround = false;
-    protected boolean isAlive = true;
+    protected boolean isAlive;
     protected boolean isOnTheDoor = false;
     protected int velX = 0;
 
@@ -77,8 +77,10 @@ public class Character {
         x += velX;
         for (Rectangle p : platforms) {
             if (getBounds().intersects(p)) {
-                if (velX > 0) x = p.x - width;
-                if (velX < 0) x = p.x + p.width;
+                if (velX > 0)
+                    x = p.x - width;
+                if (velX < 0)
+                    x = p.x + p.width;
             }
         }
         if (x < 0) x = 0;
