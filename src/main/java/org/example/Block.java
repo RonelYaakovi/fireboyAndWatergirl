@@ -11,7 +11,7 @@ public class Block extends GameObject {
         this.blockColor = color;
     }
 
-    public void draw(Graphics g) {
+    public void paint(Graphics g) {
         g.setColor(blockColor);
         g.fillRect(getX(), getY(), getWidth(), getHeight());
 

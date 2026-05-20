@@ -9,48 +9,48 @@ public class Fireboy extends Character {
     public Fireboy(int x, int y, int screenWidth, int screenHeight) {
         super(x, y, screenWidth, screenHeight);
 
-        this.idleRight = new ImageIcon("C:\\Users\\RONEL\\Downloads\\download (2).jpg").getImage();
-        this.idleLeft = new ImageIcon("C:\\Users\\RONEL\\Downloads\\di78o3m-8348947e-828b-4087-96a8-d660fad38717.png").getImage();
+        String idleFolder = "C:\\Users\\RONEL\\Downloads\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she (1)\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she\\animations\\Fight_Stance_Idle-ef897b61\\south/";
+        String runFolder = "C:\\Users\\RONEL\\Downloads\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she (1)\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she\\animations\\Running-3e435754\\east/";
 
-        String folderPath = "C:\\Users\\RONEL\\Downloads\\ezgif-split\\";
-        int numberOfFrames = 31;
+        int numberOfRunFrames = 8;
+        int numberOfIdleFrames = 8;
 
-        this.runRightFrames = new Image[numberOfFrames];
-        this.runLeftFrames = new Image[numberOfFrames];
+        this.runRightFrames = new Image[numberOfRunFrames];
+        this.runLeftFrames = new Image[numberOfRunFrames];
 
-        // טעינת הפריימים ויצירת שיקוף לצד שמאל
-        for (int i = 0; i < numberOfFrames; i++) {
-            // בניית שם הקובץ (למשל Frame000.jpg)
-            String fileName = "Frame" + String.format("%03d", i) + ".jpg";
-            Image img = new ImageIcon(folderPath + fileName).getImage();
+        this.idleRightFrames = new Image[numberOfIdleFrames];
+        this.idleLeftFrames = new Image[numberOfIdleFrames];
 
-            // שמירה למערך ימינה
+        for (int i = 0; i < numberOfIdleFrames; i++) {
+            String fileName = "frame_" + String.format("%03d", i) + ".png";
+            Image img = new ImageIcon(idleFolder + fileName).getImage();
+
+            this.idleRightFrames[i] = img;
+            this.idleLeftFrames[i] = createFlippedImage(img);
+        }
+
+        for (int i = 0; i < numberOfRunFrames; i++) {
+            String fileName = "frame_" + String.format("%03d", i) + ".png";
+            Image img = new ImageIcon(runFolder + fileName).getImage();
+
             this.runRightFrames[i] = img;
-
-            // יצירת גרסה הפוכה למערך שמאלה
             this.runLeftFrames[i] = createFlippedImage(img);
         }
 
-        // הגדרת מצב עמידה (Idle) כפריים הראשון במערך
-        this.idleRight = this.runRightFrames[0];
-        this.idleLeft = this.runLeftFrames[0];
-        this.currentImage = this.idleRight;
+        this.currentImage = this.idleRightFrames[0];
     }
 
-    // פונקציית עזר שהופכת את התמונה מצד לצד (Flip)
     private Image createFlippedImage(Image source) {
+        if (source == null) return null;
         BufferedImage bufferedImage = new BufferedImage(
                 source.getWidth(null),
                 source.getHeight(null),
-                BufferedImage.TYPE_INT_RGB); // JPG לא תומך בשקיפות
+                BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g = bufferedImage.createGraphics();
-        // מצייר את התמונה הפוך: מתחיל מהסוף ומתקדם להתחלה
         g.drawImage(source, source.getWidth(null), 0, -source.getWidth(null), source.getHeight(null), null);
         g.dispose();
 
         return bufferedImage;
-
-
     }
 }

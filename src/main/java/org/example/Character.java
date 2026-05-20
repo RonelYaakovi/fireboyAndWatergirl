@@ -8,18 +8,27 @@ public class Character {
     protected int diamondCount = 0;
     protected int screenWidth, screenHeight;
 
-    // --- מערכי תמונות אנימציה ---
+    // --- מערכי תמונות אנימציה (ריצה) ---
     protected Image[] runRightFrames;
     protected Image[] runLeftFrames;
+
+    // --- מערכי תמונות אנימציה (עמידה) ---
+    protected Image[] idleRightFrames;
+    protected Image[] idleLeftFrames;
+
+    // תמונות עמידה בודדות (למקרה שאין אנימציית עמידה)
     protected Image idleRight;
     protected Image idleLeft;
+
     protected Image currentImage;
 
-    // --- טיימר אנימציה ---
     protected boolean isFacingRight = true;
     protected int currentFrameIndex = 0;
     protected int animationTick = 0;
-    protected int animationSpeed = 5; // מהירות החלפת תמונות
+
+    // --- הגדרות מהירות אנימציה ---
+    protected int animationSpeed = 5;
+    protected int idleAnimationSpeed = 15;
 
     protected double velocityY;
     protected double gravity = 0.8;
@@ -33,12 +42,13 @@ public class Character {
     public Character(int x, int y, int screenWidth, int screenHeight) {
         this.x = x;
         this.y = y;
-        this.width = 50;  // הותאם לעבור במפה
-        this.height = 40; // הותאם לעבור במפה
+        // אלו המידות הפיזיות האמיתיות של ההיטבוקס (Hitbox)
+        this.width = 30;
+        this.height = 40;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.velocityY = 0;
-        isAlive=true;
+        this.isAlive = true;
     }
 
     public Rectangle getBounds() {
@@ -50,19 +60,19 @@ public class Character {
     }
 
     public void moveRight() {
-        this.velX = 2;
+        this.velX = 3;
         this.isFacingRight = true;
     }
 
     public void moveLeft() {
-        this.velX = -2;
+        this.velX = -3;
         this.isFacingRight = false;
     }
 
     public void stopMoving() {
         this.velX = 0;
-        this.currentFrameIndex = 0; // איפוס אנימציה
-        this.currentImage = isFacingRight ? idleRight : idleLeft;
+        this.currentFrameIndex = 0;
+        this.animationTick = 0;
     }
 
     public void jump() {
@@ -73,20 +83,16 @@ public class Character {
     }
 
     public void update(ArrayList<Rectangle> platforms) {
-        // --- 1. תנועה והתנגשות ציר X ---
         x += velX;
         for (Rectangle p : platforms) {
             if (getBounds().intersects(p)) {
-                if (velX > 0)
-                    x = p.x - width;
-                if (velX < 0)
-                    x = p.x + p.width;
+                if (velX > 0) x = p.x - width;
+                if (velX < 0) x = p.x + p.width;
             }
         }
         if (x < 0) x = 0;
         else if (x + width > screenWidth) x = screenWidth - width;
 
-        // --- 2. תנועה והתנגשות ציר Y ---
         velocityY += gravity;
         y += velocityY;
         onGround = false;
@@ -104,14 +110,12 @@ public class Character {
             }
         }
 
-
         if (y + height >= screenHeight) {
             y = screenHeight - height;
             velocityY = 0;
             onGround = true;
         }
 
-        // --- 3. עדכון פריים אנימציה ---
         if (velX != 0) {
             animationTick++;
             if (animationTick >= animationSpeed) {
@@ -125,26 +129,43 @@ public class Character {
                 }
             }
         } else {
-            currentImage = isFacingRight ? idleRight : idleLeft;
+            if (idleRightFrames != null && idleLeftFrames != null) {
+                animationTick++;
+                if (animationTick >= idleAnimationSpeed) {
+                    animationTick = 0;
+                    currentFrameIndex = (currentFrameIndex + 1) % idleRightFrames.length;
+                }
+                currentImage = isFacingRight ? idleRightFrames[currentFrameIndex] : idleLeftFrames[currentFrameIndex];
+            } else {
+                currentImage = isFacingRight ? idleRight : idleLeft;
+            }
         }
     }
 
     public void paint(Graphics g) {
         if (currentImage != null && isAlive) {
-            g.drawImage(currentImage, x, y, width, height, null);
+
+            // במקום לצייר את התמונה בדיוק על ההיטבוקס, אנחנו מרחיבים ומזיזים אותה קצת
+            // המספרים האלו "מפצים" על השטח השקוף שיש בתמונה
+            int imageX = x - 10;       // מזיז את הציור שמאלה
+            int imageY = y - 10;       // מזיז את הציור למעלה
+            int imageWidth = width + 20;  // מגדיל את הציור
+            int imageHeight = height + 10; // מגדיל את הציור
+
+            g.drawImage(currentImage, imageX, imageY, imageWidth, imageHeight, null);
+
+            // ---------------------------------------------------------
+            // טריק מפתחים: תמחק את ה-// משתי השורות למטה כדי לראות
+            // בדיוק איפה נמצאת קופסת ההתנגשות (ההיטבוקס) הבלתי נראית!
+            // ---------------------------------------------------------
+            // g.setColor(Color.RED);
+            // g.drawRect(x, y, width, height);
         }
     }
 
-    // שאר הגטרים והסטרס שלך (isAlive, died וכו')...
-    public void died(){ isAlive=false; }
+    public void died() { isAlive = false; }
     public boolean isAlive() { return isAlive; }
-
-
-    public void onTheDoor(){
-        isOnTheDoor = true;
-    }
-    public void notONTheDoor(){
-        isOnTheDoor = false;
-    }
+    public void onTheDoor() { isOnTheDoor = true; }
+    public void notONTheDoor() { isOnTheDoor = false; }
     public boolean isOnTheDoor() { return isOnTheDoor; }
 }

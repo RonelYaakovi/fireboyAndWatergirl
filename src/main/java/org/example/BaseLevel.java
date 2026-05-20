@@ -31,7 +31,11 @@ public abstract class BaseLevel extends JPanel implements Runnable {
         pauseButton.addActionListener(e -> {
             isPaused = !isPaused;
             pauseButton.setText(isPaused ? "Resume" : "Pause");
+
         });
+        if (!isPaused) {
+            this.requestFocusInWindow();
+        }
         this.add(pauseButton);
     }
 
