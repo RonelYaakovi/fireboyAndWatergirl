@@ -1,46 +1,40 @@
 package org.example;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Level1 extends BaseLevel {
-
     private Fireboy fireBoy;
     private Watergirl waterGirl;
     private Controller controller;
     private ArrayList<Block> blocks;
     private ArrayList<Pool> pools;
     private ArrayList<Diamond> diamonds;
-    private Door fireDoor;
-    private Door waterDoor;
+    private Portal portal;
     private Color mapColor;
-
     private boolean isGameOver = false;
+    private boolean isVictory = false;
     private JButton tryAgainButton;
-
     private Image firePoolImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\fireGif.gif").getImage();
     private Image waterPoolImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\watergGif.gif").getImage();
     private Image poisonPoolImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\toxic-peepo-0.jpg").getImage();
     private Image redDiamondImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\diamond-red.gif").getImage();
     private Image blueDiamondImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\Diamon-blue.gif").getImage();
-    private Image doorClosedImg = new ImageIcon("C:\\Users\\RONEL\\...\\door_closed.png").getImage();
-    private Image doorOpenImg = new ImageIcon("C:\\Users\\RONEL\\...\\door_open.png").getImage();
 
     private final int[][] mapMatrix = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 7, 7, 0, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 7, 7, 0, 1},
-            {1, 0, 0, 0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 5, 5, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 4, 1, 1, 1, 4, 4, 4, 4, 4, 1, 1, 1, 1, 0, 0, 1},
+            {1, 0, 0, 0, 5, 5, 0, 0, 0, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 0, 0, 1, 0, 0, 1},
@@ -50,7 +44,7 @@ public class Level1 extends BaseLevel {
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
@@ -59,20 +53,18 @@ public class Level1 extends BaseLevel {
         this.blocks = new ArrayList<>();
         this.pools = new ArrayList<>();
         this.diamonds = new ArrayList<>();
-
         this.mapColor = new Color(167, 127, 96);
-
         this.fireBoy = new Fireboy(40, 500, 800, 600);
         this.waterGirl = new Watergirl(80, 500, 800, 600);
-
         this.controller = new Controller(fireBoy, waterGirl);
         this.addKeyListener(controller);
+        this.addFocusListener(controller);
         this.setFocusable(true);
-
         tryAgainButton = new GameButton("Try Again", 320, 340, 160, 45, new Color(50, 50, 50));
         tryAgainButton.setVisible(false);
         tryAgainButton.addActionListener(e -> restartLevel());
         this.add(tryAgainButton);
+        soundManager.playBackgroundMusic("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Level Music.wav");
     }
 
     @Override
@@ -83,32 +75,30 @@ public class Level1 extends BaseLevel {
                 int x = col * tileSize;
                 int y = row * tileSize;
                 int cellType = mapMatrix[row][col];
-
                 switch (cellType) {
-                    case 1: // קיר
+                    case 1:
                         Block b = new Block(x, y, tileSize, tileSize, mapColor);
                         blocks.add(b);
                         hitboxes.add(b.getBounds());
                         break;
-                    case 2: //בריכת אש
+                    case 2:
                         pools.add(new Pool(x, y - 10, firePoolImg, "FIRE"));
                         break;
-                    case 3: //בריכת מים
+                    case 3:
                         pools.add(new Pool(x, y - 10, waterPoolImg, "WATER"));
                         break;
-                    case 4: //בריכת רעל
+                    case 4:
                         pools.add(new Pool(x, y - 10, poisonPoolImg, "POISON"));
                         break;
-                    case 5://יהלום אדום
+                    case 5:
                         diamonds.add(new Diamond(x, y, redDiamondImg, "FIRE"));
                         break;
-                    case 6: //יהלום כחול
+                    case 6:
                         diamonds.add(new Diamond(x, y, blueDiamondImg, "WATER"));
                         break;
-                    case 7: // דלתות יציאה
-                        if (fireDoor == null) {
-                            fireDoor = new Door(x - 50, y, "red");
-                            waterDoor = new Door(x, y, "blue");
+                    case 8:
+                        if (portal == null) {
+                            portal = new Portal(x, y);
                         }
                         break;
                 }
@@ -117,33 +107,39 @@ public class Level1 extends BaseLevel {
     }
 
     private void restartLevel() {
-        isGameOver = false;
-        tryAgainButton.setVisible(false);
-        this.isPaused = false;
-        this.isGameOver = false;
-        tryAgainButton.setVisible(false);
+        for (java.awt.event.KeyListener kl : this.getKeyListeners()) {
+            this.removeKeyListener(kl);
+        }
+        for (java.awt.event.FocusListener fl : this.getFocusListeners()) {
+            this.removeFocusListener(fl);
+        }
         this.fireBoy = new Fireboy(40, 500, 800, 600);
         this.waterGirl = new Watergirl(80, 500, 800, 600);
         this.controller = new Controller(fireBoy, waterGirl);
-
+        this.addKeyListener(controller);
+        this.addFocusListener(controller);
+        this.isGameOver = false;
+        this.isVictory = false;
+        this.isPaused = false;
+        tryAgainButton.setVisible(false);
+        if (portal != null) {
+            portal.reset();
+        }
         for (Diamond d : diamonds) {
             d.setCollected(false);
         }
-
+        soundManager.playBackgroundMusic("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Level Music.wav");
         this.requestFocusInWindow();
     }
 
     @Override
     protected void updateLevel() {
-        if (isGameOver) return;
-
+        if (isGameOver || isVictory) return;
         controller.applyInputs();
         fireBoy.update(hitboxes);
         waterGirl.update(hitboxes);
-
         Rectangle fireBounds = fireBoy.getBounds();
         Rectangle waterBounds = waterGirl.getBounds();
-
         for (Pool p : pools) {
             if (fireBounds.intersects(p.getBounds())) {
                 if (p.getType().equals("WATER") || p.getType().equals("POISON")) {
@@ -156,7 +152,6 @@ public class Level1 extends BaseLevel {
                 }
             }
         }
-
         for (Diamond d : diamonds) {
             if (!d.isCollected()) {
                 if (fireBounds.intersects(d.getBounds()) && d.getType().equals("FIRE")) {
@@ -169,32 +164,28 @@ public class Level1 extends BaseLevel {
                 }
             }
         }
-
-        if (fireDoor != null && waterDoor != null) {
-            if (fireBounds.intersects(fireDoor.getBounds())) {
-                fireDoor.open();
-                fireBoy.onTheDoor();
-            } else {
-                fireDoor.close();
-                fireBoy.notONTheDoor();
+        if (portal != null) {
+            Rectangle portalBounds = portal.getBounds();
+            if (fireBoy.isVisible() && fireBounds.intersects(portalBounds)) {
+                fireBoy.disappear();
+                fireBoy.stopMoving();
+                portal.setFireBoyEntered();
             }
-
-            if (waterBounds.intersects(waterDoor.getBounds())) {
-                waterDoor.open();
-                waterGirl.onTheDoor();
-            } else {
-                waterDoor.close();
-                waterGirl.notONTheDoor();
+            if (waterGirl.isVisible() && waterBounds.intersects(portalBounds)) {
+                waterGirl.disappear();
+                waterGirl.stopMoving();
+                portal.setWaterGirlEntered();
             }
-
-            if (fireBoy.isOnTheDoor() && waterGirl.isOnTheDoor()) {
-                System.out.println("Victory! Level Completed!");
+            if (portal.areBothInside()) {
+                isVictory = true;
+                soundManager.stopMusic();
             }
         }
     }
 
     private void triggerGameOver() {
         isGameOver = true;
+        soundManager.stopMusic();
         fireBoy.died();
         waterGirl.died();
         tryAgainButton.setVisible(true);
@@ -206,20 +197,25 @@ public class Level1 extends BaseLevel {
         for (Block b : blocks) b.paint(g);
         for (Pool p : pools) p.paint(g);
         for (Diamond d : diamonds) d.paint(g);
-
-        if (fireDoor != null) fireDoor.paint(g);
-        if (waterDoor != null) waterDoor.paint(g);
-
+        if (portal != null) portal.draw(g);
         if (fireBoy != null) fireBoy.paint(g);
         if (waterGirl != null) waterGirl.paint(g);
-
         if (isGameOver) {
             g.setColor(new Color(0, 0, 0, 180));
             g.fillRect(0, 0, 800, 600);
-
             g.setColor(Color.RED);
             g.setFont(new Font("Verdana", Font.BOLD, 50));
             String text = "GAME OVER";
+            FontMetrics metrics = g.getFontMetrics(g.getFont());
+            int x = (800 - metrics.stringWidth(text)) / 2;
+            g.drawString(text, x, 260);
+        }
+        if (isVictory) {
+            g.setColor(new Color(0, 0, 0, 180));
+            g.fillRect(0, 0, 800, 600);
+            g.setColor(Color.GREEN);
+            g.setFont(new Font("Verdana", Font.BOLD, 50));
+            String text = "LEVEL COMPLETED!";
             FontMetrics metrics = g.getFontMetrics(g.getFont());
             int x = (800 - metrics.stringWidth(text)) / 2;
             g.drawString(text, x, 260);

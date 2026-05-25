@@ -8,8 +8,9 @@ public abstract class BaseLevel extends JPanel implements Runnable {
     protected Window window;
     protected Image backgroundImage;
     protected Thread gameThread;
+    protected JButton backButton;
+    protected SoundManager soundManager = new SoundManager();
 
-    // מערכת הפסקה (Pause)
     protected boolean isPaused = false;
     protected JButton pauseButton;
 
@@ -21,22 +22,39 @@ public abstract class BaseLevel extends JPanel implements Runnable {
         this.backgroundImage = new ImageIcon(bgImagePath).getImage();
         this.hitboxes = new ArrayList<>();
 
-        // יצירת כפתור ההשהייה
         createPauseButton();
+        createBackButton();
     }
 
     private void createPauseButton() {
         pauseButton = new GameButton("Pause", 10, 10, 100, 30, new Color(100, 100, 100));
         pauseButton.setFont(new Font("Arial", Font.BOLD, 14));
+
         pauseButton.addActionListener(e -> {
             isPaused = !isPaused;
             pauseButton.setText(isPaused ? "Resume" : "Pause");
 
+            if (isPaused) {
+                soundManager.pauseMusic();
+            } else {
+                soundManager.resumeMusic();
+                this.requestFocusInWindow();
+            }
         });
-        if (!isPaused) {
-            this.requestFocusInWindow();
-        }
+
         this.add(pauseButton);
+    }
+
+    private void createBackButton() {
+        backButton = new GameButton("Back", 120, 10, 100, 30, new Color(100, 100, 100));
+        backButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+        backButton.addActionListener(e -> {
+            soundManager.stopMusic();
+            window.switchPanel(new LevelSelectionScreen(window));
+        });
+
+        this.add(backButton);
     }
 
     protected abstract void buildMap();
@@ -75,7 +93,7 @@ public abstract class BaseLevel extends JPanel implements Runnable {
         }
 
         if (isPaused) {
-            g.setColor(new Color(0, 0, 0, 150)); // שחור חצי-שקוף
+            g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, window.getWidth(), window.getHeight());
 
             g.setColor(Color.WHITE);
@@ -83,7 +101,6 @@ public abstract class BaseLevel extends JPanel implements Runnable {
             g.drawString("PAUSED", 280, 300);
         }
 
-        // טריק למפתחים: ציור הקירות בירוק כדי שנוכל לראות איפה שמנו אותם (נמחק את זה בהמשך)
         g.setColor(Color.GREEN);
         for (Rectangle wall : hitboxes) {
             g.drawRect(wall.x, wall.y, wall.width, wall.height);

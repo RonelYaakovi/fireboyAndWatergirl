@@ -2,16 +2,16 @@ package org.example;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
-public class Controller implements KeyListener {
+public class Controller implements KeyListener, FocusListener {
 
-    // אני משתמש במחלקת האב Character כדי שזה יעבוד גם ל-FireBoy וגם ל-Watergirl
     private Character fireBoy;
     private Character watergirl;
 
-    // אינדקסים:
-    // 0=ימינה(אש), 1=שמאלה(אש), 2=קפיצה(אש)
-    // 3=ימינה(מים), 4=שמאלה(מים), 5=קפיצה(מים)
+
+
     private boolean[] booleans;
 
     public Controller(Character fireBoy, Character watergirl) {
@@ -80,5 +80,19 @@ public class Controller implements KeyListener {
         if (booleans[5]) {
             watergirl.jump();
         }
+    }
+    @Override
+    public void focusGained(FocusEvent e) {
+        // לא צריך לעשות כלום כשהמשחק חוזר
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        // כשהמשחק מאבד פוקוס (כמו בלחיצה על Pause), מאפסים את כל המקשים!
+        for (int i = 0; i < booleans.length; i++) {
+            booleans[i] = false;
+        }
+        fireBoy.stopMoving();
+        watergirl.stopMoving();
     }
     }
