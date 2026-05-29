@@ -14,7 +14,7 @@ public class LevelSelectionScreen extends JPanel {
         this.window = window;
         this.setLayout(null);
 
-        this.backgroundImage = new ImageIcon("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Background_fireboy&watergirl.jpeg").getImage();
+        this.backgroundImage = new ImageIcon("src/images/start screen/Background_fireboy&watergirl.jpeg").getImage();
 
         this.level1Button = new GameButton("LEVEL 1", 200, 250, 150, 50, new Color(138, 95, 65));
         this.level1Button.addActionListener(e -> {

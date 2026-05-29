@@ -9,7 +9,7 @@ public class Portal extends GameObject {
 
     public Portal(int x, int y) {
         super(x, y, 50, 75);
-        this.image = new ImageIcon("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\unknown.png").getImage();
+        this.image = new ImageIcon("src/images/start screen/unknown.png").getImage();
     }
 
     public void draw(Graphics g) {

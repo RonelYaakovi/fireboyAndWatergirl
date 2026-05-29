@@ -16,7 +16,7 @@ public class Level1 extends BaseLevel {
     private boolean isVictory = false;
     private JButton tryAgainButton;
     private Image firePoolImg = new ImageIcon("src/images/start screen/fireGif.gif").getImage();
-    private Image waterPoolImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\watergGif.gif").getImage();
+    private Image waterPoolImg = new ImageIcon("src/images/start screen/watergGif.gif").getImage();
     private Image poisonPoolImg = new ImageIcon("src/images/start screen/toxic-peepo-0.jpg").getImage();
     private Image redDiamondImg = new ImageIcon("src/images/start screen/diamond-red.gif").getImage();
     private Image blueDiamondImg = new ImageIcon("src/images/start screen/Diamon-blue.gif").getImage();
@@ -49,7 +49,7 @@ public class Level1 extends BaseLevel {
     };
 
     public Level1(Window window) {
-        super(window, "C:\\Users\\RONEL\\Downloads\\stone-wall-pavement-from-bricks-rocks-with-moss-game-background-cartoon_191307-991.jpg");
+        super(window, "src/images/start screen/stone-wall-pavement-from-bricks-rocks-with-moss-game-background-cartoon_191307-991.jpg");
         this.blocks = new ArrayList<>();
         this.pools = new ArrayList<>();
         this.diamonds = new ArrayList<>();
@@ -64,7 +64,7 @@ public class Level1 extends BaseLevel {
         tryAgainButton.setVisible(false);
         tryAgainButton.addActionListener(e -> restartLevel());
         this.add(tryAgainButton);
-        soundManager.playBackgroundMusic("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Level Music.wav");
+        soundManager.playBackgroundMusic("src/images/start screen/Level Music.wav");
     }
 
     @Override
@@ -128,7 +128,7 @@ public class Level1 extends BaseLevel {
         for (Diamond d : diamonds) {
             d.setCollected(false);
         }
-        soundManager.playBackgroundMusic("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Level Music.wav");
+        soundManager.playBackgroundMusic("src/images/start screen/Level Music.wav");
         this.requestFocusInWindow();
     }
 

@@ -12,7 +12,7 @@ public class RulesScreen extends JPanel {
         this.window = window;
         this.setLayout(null);
 
-        this.backgroundImage = new ImageIcon("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Background_fireboy&watergirl.jpeg").getImage();
+        this.backgroundImage = new ImageIcon("src/images/start screen/Background_fireboy&watergirl.jpeg").getImage();
 
         this.backButton = new JButton("Back");
         this.backButton.setBounds(340, 480, 100, 40);

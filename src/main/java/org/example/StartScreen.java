@@ -16,7 +16,7 @@ public class StartScreen extends JPanel {
         this.window = window;
         this.setLayout(null);
 
-        this.backgroundImage = new ImageIcon("C:\\Users\\RONEL\\IdeaProjects\\fireboyAndWatergirl\\src\\images\\start screen\\Background_fireboy&watergirl.jpeg").getImage();
+        this.backgroundImage = new ImageIcon("src/images/start screen/Background_fireboy&watergirl.jpeg").getImage();
         this.backgroundImage = backgroundImage.getScaledInstance(window.getWidth(), window.getHeight(), Image.SCALE_SMOOTH);
 
         this.startButton = new GameButton("Start", 190, 290, 140, 45, new Color(192, 7, 7));

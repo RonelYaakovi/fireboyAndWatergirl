@@ -9,8 +9,8 @@ public class Watergirl extends Character {
     public Watergirl(int x, int y, int screenWidth, int screenHeight) {
         super(x, y, screenWidth, screenHeight);
 
-        String idleFolder = "C:\\Users\\RONEL\\Downloads\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she\\animations\\Fight_Stance_Idle-e1c7f6c4\\south/";
-        String runFolder = "C:\\Users\\RONEL\\Downloads\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she\\A_2D_retro-game_8-bit_pixel_art_running_sprite_she\\animations\\Running-c9228cc4\\east/";
+        String idleFolder = "src/images/start screen/Fight_Stance_Idle-e1c7f6c4/south";
+        String runFolder = "src/images/start screen/Running-c9228cc4/east";
 
         int numberOfRunFrames = 8;
         int numberOfIdleFrames = 8;
