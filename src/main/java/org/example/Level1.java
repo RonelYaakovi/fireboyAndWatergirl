@@ -15,11 +15,11 @@ public class Level1 extends BaseLevel {
     private boolean isGameOver = false;
     private boolean isVictory = false;
     private JButton tryAgainButton;
-    private Image firePoolImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\fireGif.gif").getImage();
+    private Image firePoolImg = new ImageIcon("src/images/start screen/fireGif.gif").getImage();
     private Image waterPoolImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\watergGif.gif").getImage();
-    private Image poisonPoolImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\toxic-peepo-0.jpg").getImage();
-    private Image redDiamondImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\diamond-red.gif").getImage();
-    private Image blueDiamondImg = new ImageIcon("C:\\Users\\RONEL\\Downloads\\Diamon-blue.gif").getImage();
+    private Image poisonPoolImg = new ImageIcon("src/images/start screen/toxic-peepo-0.jpg").getImage();
+    private Image redDiamondImg = new ImageIcon("src/images/start screen/diamond-red.gif").getImage();
+    private Image blueDiamondImg = new ImageIcon("src/images/start screen/Diamon-blue.gif").getImage();
 
     private final int[][] mapMatrix = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
