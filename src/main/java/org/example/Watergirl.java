@@ -9,8 +9,8 @@ public class Watergirl extends Character {
     public Watergirl(int x, int y, int screenWidth, int screenHeight) {
         super(x, y, screenWidth, screenHeight);
 
-        String idleFolder = "src/images/start screen/Fight_Stance_Idle-e1c7f6c4/south";
-        String runFolder = "src/images/start screen/Running-c9228cc4/east";
+        String idleFolder = "src/images/start screen/Fight_Stance_Idle-e1c7f6c4/south/";
+        String runFolder = "src/images/start screen/Running-c9228cc4/east/";
 
         int numberOfRunFrames = 8;
         int numberOfIdleFrames = 8;
@@ -41,7 +41,9 @@ public class Watergirl extends Character {
     }
 
     private Image createFlippedImage(Image source) {
-        if (source == null) return null;
+        if (source == null || source.getWidth(null) <= 0 || source.getHeight(null) <= 0) {
+            return null;
+        }
 
         BufferedImage bufferedImage = new BufferedImage(
                 source.getWidth(null),

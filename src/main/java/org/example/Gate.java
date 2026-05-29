@@ -14,7 +14,7 @@ public class Gate extends GameObject {
     public Gate(int x, int y) {
         super(x, y, 50, 50);
 
-        gateImage = new ImageIcon("gate.png").getImage();
+        gateImage = new ImageIcon("src/images/start screen/gate.png").getImage();// זה לא באמת עובד
 
         this.originalY = y;
         this.targetY = y - getHeight();

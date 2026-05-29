@@ -9,8 +9,8 @@ public class Fireboy extends Character {
     public Fireboy(int x, int y, int screenWidth, int screenHeight) {
         super(x, y, screenWidth, screenHeight);
 
-        String idleFolder = "src/images/start screen/Fight_Stance_Idle-ef897b61/south";
-        String runFolder = "src/images/start screen/Running-3e435754/east";
+        String idleFolder = "src/images/start screen/Fight_Stance_Idle-ef897b61/south/";
+        String runFolder = "src/images/start screen/Running-3e435754/east/";
 
         int numberOfRunFrames = 8;
         int numberOfIdleFrames = 8;
@@ -41,7 +41,10 @@ public class Fireboy extends Character {
     }
 
     private Image createFlippedImage(Image source) {
-        if (source == null) return null;
+        if (source == null || source.getWidth(null) <= 0 || source.getHeight(null) <= 0) {
+            return null;
+        }
+
         BufferedImage bufferedImage = new BufferedImage(
                 source.getWidth(null),
                 source.getHeight(null),
