@@ -23,7 +23,6 @@ public class Character {
     protected double jumpStrength = -7.5;
     protected boolean onGround = false;
     protected boolean isAlive;
-    protected boolean isOnTheDoor = false;
     protected int velX = 0;
     protected boolean isVisible = true;
 
@@ -136,11 +135,7 @@ public class Character {
     }
 
     public void died() { isAlive = false; }
-    public boolean isAlive() { return isAlive; }
-    public void onTheDoor() { isOnTheDoor = true; }
-    public void notONTheDoor() { isOnTheDoor = false; }
-    public boolean isOnTheDoor() { return isOnTheDoor; }
     public void disappear() { this.isVisible = false; }
     public boolean isVisible() { return isVisible; }
-    public void resetVisibility() { this.isVisible = true; }
+
 }

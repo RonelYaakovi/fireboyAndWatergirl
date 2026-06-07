@@ -14,8 +14,6 @@ public class Block extends GameObject {
     public void paint(Graphics g) {
         g.setColor(blockColor);
         g.fillRect(getX(), getY(), getWidth(), getHeight());
-
-        // ציור מסגרת שחורה קטנה סביב כל קובייה כדי שייראה כמו אבנים
         g.setColor(Color.BLACK);
         g.drawRect(getX(), getY(), getWidth(), getHeight());
     }

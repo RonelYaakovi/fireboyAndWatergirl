@@ -11,7 +11,6 @@ public class Controller implements KeyListener, FocusListener {
     private Character watergirl;
 
 
-
     private boolean[] booleans;
 
     public Controller(Character fireBoy, Character watergirl) {
@@ -22,22 +21,19 @@ public class Controller implements KeyListener, FocusListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // לא צריך לממש כלום כאן
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        // --- מקשי FireBoy (חצים) ---
         if (key == KeyEvent.VK_RIGHT) booleans[0] = true;
         else if (key == KeyEvent.VK_LEFT) booleans[1] = true;
         else if (key == KeyEvent.VK_UP) booleans[2] = true;
 
-            // --- מקשי Watergirl (WASD) ---
-        else if (key == KeyEvent.VK_D) booleans[3] = true; // D = ימינה
-        else if (key == KeyEvent.VK_A) booleans[4] = true; // A = שמאלה
-        else if (key == KeyEvent.VK_W) booleans[5] = true; // W = קפיצה
+        else if (key == KeyEvent.VK_D) booleans[3] = true;
+        else if (key == KeyEvent.VK_A) booleans[4] = true;
+        else if (key == KeyEvent.VK_W) booleans[5] = true;
     }
 
     @Override
@@ -53,10 +49,8 @@ public class Controller implements KeyListener, FocusListener {
         else if (key == KeyEvent.VK_W) booleans[5] = false;
     }
 
-    // הפונקציה הזו תיקרא מתוך לולאת המשחק המרכזית (Game Loop) בכל פריים
     public void applyInputs() {
 
-        // --- תנועת FireBoy ---
         if (booleans[0]) {
             fireBoy.moveRight();
         } else if (booleans[1]) {
@@ -68,7 +62,6 @@ public class Controller implements KeyListener, FocusListener {
         if (booleans[2]) {
             fireBoy.jump();
         }
-        // --- תנועת Watergirl ---
         if (booleans[3]) {
             watergirl.moveRight();
         } else if (booleans[4]) {
@@ -81,18 +74,17 @@ public class Controller implements KeyListener, FocusListener {
             watergirl.jump();
         }
     }
+
     @Override
     public void focusGained(FocusEvent e) {
-        // לא צריך לעשות כלום כשהמשחק חוזר
     }
 
     @Override
     public void focusLost(FocusEvent e) {
-        // כשהמשחק מאבד פוקוס (כמו בלחיצה על Pause), מאפסים את כל המקשים!
         for (int i = 0; i < booleans.length; i++) {
             booleans[i] = false;
         }
         fireBoy.stopMoving();
         watergirl.stopMoving();
     }
-    }
+}
